@@ -23,8 +23,11 @@ export default function App() {
       return (
         <div>
           {jArray.map((e, x) => (
-            <button onClick={(event) => PlayerMove(event, whoseTurn, y, x)}>
-              {`${e}, ${x} - ${y}`}
+            <button
+              key={x}
+              onClick={(event) => PlayerMove(event, whoseTurn, y, x)}
+            >
+              {renderText(e)}
             </button>
           ))}
         </div>
@@ -34,9 +37,15 @@ export default function App() {
 
   function ResetBoard(e: React.MouseEvent<HTMLButtonElement>) {
     setWhoWon(-1);
-    console.log(whoWon);
+    const b: number[][] = [];
+    for (let j = 0; j < numberOfTiles; j++) {
+      b[j] = [];
+      for (let i = 0; i < numberOfTiles; i++) {
+        b[j][i] = -1;
+      }
+    }
+    setBoardState(b);
     setWhoseTurn(1);
-    setNumberOfTiles(3);
   }
 
   function PlayerMove(
@@ -151,4 +160,10 @@ export default function App() {
       </>
     );
   } else return renderBoard();
+}
+
+function renderText(value: number) {
+  if (value === -1) return "[ ]";
+  if (value === 0) return "O";
+  if (value === 1) return "X";
 }
